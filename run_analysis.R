@@ -1,7 +1,7 @@
 library(dplyr)
 
-# filename='getdata_projectfiles_UCI HAR Dataset.zip'
 datasetDirName='UCI HAR Dataset'
+outputFileName='tidy.txt'
 
 features=read.table(
 	file.path(datasetDirName,'features.txt'),
@@ -39,3 +39,4 @@ fullData=rbind(
 	loadSet('test')
 )
 avgData=fullData %>% group_by(Subject,Activity) %>% summarise_each(funs(mean))
+write.table(avgData,outputFileName,row.name=F)
