@@ -34,7 +34,8 @@ loadSet=function(name) {
 	)
 }
 
-data=rbind(
+fullData=rbind(
 	loadSet('train'),
 	loadSet('test')
 )
+avgData=fullData %>% group_by(Subject,Activity) %>% summarise_each(funs(mean))
