@@ -16,22 +16,25 @@ activities=read.table(
 )
 activityNames=activities$ActivityName
 
-loadSet=function(dirName) {
+loadSet=function(name) {
 	cbind(
 		read.table(
-			file.path(datasetDirName,dirName,'subject_test.txt'),
+			file.path(datasetDirName,name,paste0('subject_',name,'.txt')),
 			col.names='Subject'
 		),
 		read.table(
-			file.path(datasetDirName,dirName,'y_test.txt'),
+			file.path(datasetDirName,name,paste0('y_',name,'.txt')),
 			col.names='Activity'
 		) %>% mutate(Activity=activityNames[Activity]),
 		read.table(
-			file.path(datasetDirName,dirName,'X_test.txt'),
+			file.path(datasetDirName,name,paste0('X_',name,'.txt')),
 			colClasses=ifelse(targetFeatures,NA,'NULL'),
 			col.names=featureNames
 		)
 	)
 }
 
-t=loadSet('test')
+data=rbind(
+	loadSet('train'),
+	loadSet('test')
+)
