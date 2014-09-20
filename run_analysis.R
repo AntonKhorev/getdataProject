@@ -5,7 +5,8 @@ features=read.table(
 	paste(datasetDirName,'features.txt',sep='/'),
 	col.names=c('FeatureIndex','FeatureName')
 )
-targetFeatures=grep('-(mean|std)\\(\\)',features$FeatureName)
+featureNames=gsub('\\(|\\)','',features$FeatureName)
+targetFeatures=grepl('-(mean|std)\\(\\)',features$FeatureName)
 
 loadSet=function(dirName) {
 	cbind(
@@ -19,8 +20,10 @@ loadSet=function(dirName) {
 		),
 		read.table(
 			paste(datasetDirName,dirName,'X_test.txt',sep='/'),
+			colClasses=ifelse(targetFeatures,NA,'NULL'),
+			col.names=featureNames
 		)
 	)
 }
 
-# t=loadSet('test')
+t=loadSet('test')
